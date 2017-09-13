@@ -6,4 +6,4 @@ We will also define application-specific HTTP messages to send information from 
 For a more detailed outline of the requirements for this lab, please see the Assignment_1_Instructions.pdf document (because I don't want to type them here).
 
 --TODO--
-Add actual implementation / use instructions.
+Add actual use instructions when we have something that works.
