@@ -29,6 +29,7 @@ battleship = ['B', 0];
 cruiser = ['R', 0];
 sub = ['S', 0];
 destroyer = ['D', 0];
+ships = [carrier, battleship, cruiser, sub, destroyer];
 
 def checkSunk(ship):
     if(ship[1] == 0):
@@ -45,26 +46,12 @@ def checkSunk(ship):
 
 def takeHit(x, y):
     hit = 0;
-    if(boardArray[x][y] == carrier[0]):
-        hit = 1;
-        boardArray[x][y] = 'X';
-        checkSunk(carrier);
-    if(boardArray[x][y] == battleship[0]):
-        hit = 1;
-        boardArray[x][y] = 'X';
-        checkSunk(battleship);
-    if(boardArray[x][y] == cruiser[0]):
-        hit = 1;
-        boardArray[x][y] = 'X';
-        checkSunk(cruiser);
-    if(boardArray[x][y] == sub[0]):
-        hit = 1;
-        boardArray[x][y] = 'X';
-        checkSunk(sub);
-    if(boardArray[x][y] == destroyer[0]):
-        hit = 1;
-        boardArray[x][y] = 'X';
-        checkSunk(destroyer);
+    for ship in range(len(ships)):
+        if(boardArray[x][y] == ships[ship][0]):
+            hit = 1;
+            boardArray[x][y] = 'X';
+            checkSunk(ships[ship]);
+            break;
     if(hit == 0):
         print("hit=0");
         boardArray[x][y] = 'O';
@@ -72,6 +59,7 @@ def takeHit(x, y):
 printBoard();
 takeHit(0,0);
 takeHit(1,1);
+takeHit(1,9);
 takeHit(9,9);
 takeHit(9,8);
 printBoard();
