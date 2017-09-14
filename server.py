@@ -36,8 +36,9 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             f.close()
         elif p.match(s.path):                           # Request for fire slavo
             match = re.findall(r"(\d{1,"+DIGITS_REG+"})", s.path)
-            x, y = match[0], match[1]
-            print(x+","+y)
+        wip/add_game_logic
+            x, y = int(match[0]), int(match[1])
+            print(str(x)+","+str(y))
             if not (0<=x<BOARD_DIM and 0<=y<BOARD_DIM):  # X and Y are not within range of BOARD_DIM
                 s.send_response(404)                             # HTTP response = 404
                 s.send_header("Content-type", "text/html")
