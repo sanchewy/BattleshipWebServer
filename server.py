@@ -8,8 +8,9 @@ from os import curdir, sep
 HOST_NAME = '0.0.0.0' # The only way we could find to serve localhost and IP.
 PORT_NUMBER = int(sys.argv[1])
 BOARD_DIM = 10      # Dimension of the board
-p = re.compile('/x=\d&y=\d')    # Regex to match coordinates in URL
-
+DIGITS_REG = str(len(str(BOARD_DIM)))
+regex = r"/x=\d{1,"+DIGITS_REG+"}&y=\d{1,"+DIGITS_REG+"}$"
+p = re.compile(regex)    # Regex to match coordinates in URL
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(s):
@@ -34,15 +35,18 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                     s.wfile.write("<br>"+line+"</br>")
             f.close()
         elif p.match(s.path):                           # Request for fire slavo
-            x, y = s[3], s[7]
+            match = re.findall(r"(\d{1,"+DIGITS_REG+"})", s.path)
+            x, y = match[0], match[1]
+            print(x+","+y)
             if not (0<=x<BOARD_DIM and 0<=y<BOARD_DIM):  # X and Y are not within range of BOARD_DIM
                 s.send_response(404)                             # HTTP response = 404
                 s.send_header("Content-type", "text/html")
                 s.wfile.write("<p>Coordinates out of bounds.</p>")
                 s.end_headers()
-            # Check if coordinates have allready been fired upon
-            # Return "hit=1 or hit=0"&"sink={C,B,R,S,D}" HTTP response = 200
-                                                        # If yes, HTTP response = 410
+            # Check if coordinates have allready been fired upon. board(x,y)=='X'
+                # If yes, HTTP response = 410
+            # Check if coordinates hit or/and sink
+                # Return "hit=1" or "hit=0" or "hit=1&sink={C,B,R,S,D}" HTTP response = 200
         else:                                           # Improperly formatted
             s.send_header("Content-type", "text/html")
             s.wfile.write("<p>Improperly formated request.</p>")
