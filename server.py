@@ -4,7 +4,6 @@ import re
 from http.server import BaseHTTPRequestHandler,HTTPServer
 from os import curdir, sep
 
-
 HOST_NAME = '0.0.0.0'           # The only way we could find to serve localhost and IP.
 PORT_NUMBER = int(sys.argv[1])
 BOARD_DIM = 10                  # Dimension of the board
