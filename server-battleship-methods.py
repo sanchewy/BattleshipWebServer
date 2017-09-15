@@ -20,9 +20,16 @@ def printBoard():
     print;
     for i in range(len(boardArray)):
         for j in range(len(boardArray[i])):
-            print(boardArray[i][j]),
-        print;
+            sys.stdout.write(boardArray[i][j])
+        print("\r");
     print;
+
+def writeBoard():
+    fp = open(boardFile, "w")
+    for i in range(len(boardArray)):
+        for j in range(len(boardArray[i])):
+            fp.write(boardArray[i][j])
+        fp.write("\n");
 
 carrier = ['C', 0];
 battleship = ['B', 0];
@@ -55,14 +62,16 @@ def takeHit(x, y):
     if(hit == 0):
         print("hit=0");
         boardArray[x][y] = 'O';
+    
 
-printBoard();
+writeBoard();
 takeHit(0,0);
 takeHit(1,1);
 takeHit(1,9);
 takeHit(9,9);
 takeHit(9,8);
-printBoard();
+writeBoard();
+
 
 
 
