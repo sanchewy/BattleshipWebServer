@@ -44,7 +44,7 @@ def writeBoard():
 def checkSunk(ship, s):
     if(ship[1] == 0): #assume ship has been sunk
         ship[1] = 1
-    for i in range(len(boardArray)): #if we find that the ship is still on the board, 
+    for i in range(len(boardArray)): #if we find that the ship is still on the board,
         for j in range(len(boardArray[i])):
             if(boardArray[i][j] == ship[0]):
                 ship[1] = 0     #not sunk
@@ -61,7 +61,6 @@ def checkSunk(ship, s):
             s.wfile.write(b"hit=1&sink=D") #send hit and sunk
     else:
         s.wfile.write(b"hit=1") #otherwise just send hit
-    s.end_headers()
 
 def isHit(x, y):
     if(boardArray[x][y] == 'X' or boardArray[x][y] == 'O'):
@@ -72,11 +71,12 @@ def takeHit(x, y, s):
     if(isHit(x, y) == True): #if this location has already been fired at
         s.send_response(410) #HTTP Gone
         s.send_header(b"Content-type", b"text/html")
-        s.wfile.write(b"You already fired at this location!")
         s.end_headers()
+        s.wfile.write(b"You already fired at this location!")
     else: #if it is a valid, unattacked location
         s.send_response(200) #send HTTP OK
         s.send_header(b"Content-type", b"text/html")
+        s.end_headers()
         hit = 0;
         for ship in range(len(ships)): #check if we hit any ships
             if(boardArray[x][y] == ships[ship][0]):
@@ -87,7 +87,6 @@ def takeHit(x, y, s):
         if(hit == 0): #if it was a miss
             boardArray[x][y] = 'O';
             s.wfile.write(b"hit=0") #send hit = 0
-            s.end_headers()
     writeBoard()
 
 ## MAIN REQUEST HANDLER
@@ -120,15 +119,15 @@ class RequestHandler(BaseHTTPRequestHandler):
             if not (0<=x<BOARD_DIM and 0<=y<BOARD_DIM):  # X and Y are not within range of BOARD_DIM
                 s.send_response(404)                             # HTTP response = 404
                 s.send_header(b"Content-type", b"text/html")
-                s.wfile.write(b"Coordinates out of bounds.")
                 s.end_headers()
+                s.wfile.write(b"Coordinates out of bounds.")
             else:
                 takeHit(x, y, s)
         else:
             s.send_response(400) # For all other messages, return a HTTP response = 400.
             s.send_header(b"Content-type", b"text/html")
-            s.wfile.write(b"Improperly formated request.")
             s.end_headers()
+            s.wfile.write(b"Improperly formated request.")
 
 if __name__ == '__main__':
     server_class = HTTPServer
