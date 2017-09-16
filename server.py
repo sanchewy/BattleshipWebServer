@@ -5,7 +5,7 @@
 ## --------------------------- ##
 ## Due 9/18/2017               ##
 ## Authors:                    ##
-## Keinan Basalm               ##
+## Keinan Balsam               ##
 ## Kincade Pavich              ##
 #################################
 
