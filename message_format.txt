@@ -1,0 +1,21 @@
+For guesses, our implementation uses default HTTP GET requests at this URI:
+	GET HOSTNAME:PORT/x=7&y=1
+
+The reason we used get requests instead of POST was to remain in accordance to the whitehouse RESTful API standards. RESTful web servers don't have routes for POST requests that don't have payloads. Since all of the data needed to handle the fire request is contained in the URI, we opted to use a GET request and perserver the REST standard.
+
+For viewing the own_board.txt or opponent_board.txt through the browser, use the default HTTP GET request at this URI:
+	GET HOSTNAME:PORT/own_board.html
+	GET HOSTNAME:PORT/opponent_board.html
+As is, these file are not served as they should be. We use the python script to open the files and then write them into the HTTP stream using wfile.write(). We considered writing a php script within an index.html file and then just serving that file to the request, but we had trouble getting the php to work.
+
+Additionally, responses to the client from the server are HTTP responses (codes are as dicatated by the assignment).
+	200 - OK
+	404 - Not found
+	400 - Bad requests
+	410 - Gone
+
+The reponses are actually in a stream (python's BaseHTTPServer wfile is an output stream)
+	In order to adhere to the HTTP, we send a header indicating "Content-type" of "text/html".
+	We then have the client parse the response for the communicated message.
+
+Our implementation of this game initializes the opponent_board.txt when the game starts. This file is modified each time the client receives a response. 
